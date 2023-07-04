@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:forms_app/infrastructure/inputs/password.dart';
 import 'package:forms_app/presentation/blocs/register/register_cubit.dart';
 import 'package:forms_app/presentation/widgets/widgets.dart';
 
@@ -64,6 +63,7 @@ class _RegisterFormState extends State<_RegisterForm> {
   
   final registerCubit = context.watch<RegisterCubit>();
   final username = registerCubit.state.username;
+  final email = registerCubit.state.email;
   final password = registerCubit.state.password;
 
     return Form(
@@ -75,41 +75,22 @@ class _RegisterFormState extends State<_RegisterForm> {
         CustomTextField(
           label: 'Nombre de usuario',
           onChanged: registerCubit.usernameChanged,
-          errorMessage: username.isPure || username.isValid 
-          ? null
-          : 'Usuario no válido', 
-        ), 
+          errorMessage: username.errorMessage,
+          ), 
         const SizedBox(height: 20),
 
         CustomTextField(
           label: 'Correo electronico',
-          onChanged: (value) {
-            registerCubit.emailChanged(value);
-          },
-          validator: (value) {
-            if(value == null || value.isEmpty) return 'Campo requerido';
-            if(value.trim().isEmpty) return 'Campo requerido';
-           final emailRegExp = RegExp(
-              r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
-            );
-            if(!emailRegExp.hasMatch(value)) return 'Formato de correo inválido.';
-            return null;
-          },
+          onChanged: registerCubit.emailChanged,
+          errorMessage:  email.errorMessage,
         ),
 
         const SizedBox(height: 20),
         CustomTextField(
-          label: 'Contraseñas',
+          label: 'Contraseña',
           obscureText: true,
-          onChanged: (value) {
-            registerCubit.passwordChanged(value);
-          },
-          validator: (value) {
-            if(value == null || value.isEmpty) return 'Campo requerido';
-            if(value.trim().isEmpty) return 'Campo requerido';
-            if(value.length < 6 ) return 'El usuario debe tener más de 6 letras';
-            return null;
-          },
+          onChanged: registerCubit.passwordChanged,
+          errorMessage: password.errorMessage,    
         ),
 
         const SizedBox(height: 20),

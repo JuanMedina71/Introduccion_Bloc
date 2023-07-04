@@ -12,14 +12,14 @@ enum FormStatus {
     final FormStatus formStatus;
     final bool isValid;
     final Username username;
-    final String email;
+    final Email email;
     final Password password;
  
  const RegisterFormState({
     this.isValid = false,
     this.formStatus = FormStatus.invalid, 
     this.username = const Username.pure(), 
-    this.email = '', 
+    this.email = const Email.pure(), 
     this.password = const Password.pure(),
  
  });
@@ -29,7 +29,7 @@ enum FormStatus {
      FormStatus? formStatus,
      bool? isValid,
      Username? username,
-     String? email, 
+     Email? email, 
      Password? password,
  }) => RegisterFormState(
   formStatus: formStatus ?? this.formStatus,
